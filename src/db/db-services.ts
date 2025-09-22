@@ -71,10 +71,10 @@ export const saveContato = async (db: SQLiteDatabase, contatos: Contato[]) => {
     `INSERT OR REPLACE INTO ${tableName}(nome, sobrenome, telefone, email) values`+
         contatos.map(i => `(
             '${i.nome}', 
-            '${i.sobrenome},',
-            '${i.telefone},',
-            '${i.email}
-        ')`).join(',');
+            '${i.sobrenome}',
+            '${i.telefone}',
+            '${i.email}' 
+        )`).join(',');
 
     return db.executeSql(insertQuery);
 }

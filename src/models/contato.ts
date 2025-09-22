@@ -1,5 +1,5 @@
 export type Contato = {
-    id: number,
+    id?: number,
     nome: string,
     sobrenome: string,
     telefone: string,

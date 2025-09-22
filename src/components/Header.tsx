@@ -1,12 +1,16 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
- export default function Header (props) {
+ export default function Header () {
    return(
      <View style={styles.container}>
        <View style={styles.containerFlex}>
         <View style={styles.invButton}></View>
-        <Text style={styles.headerText}>{props.title}</Text>
-        <TouchableOpacity style={styles.button}>+</TouchableOpacity>
+        <Text style={styles.headerText}>CONTATOS</Text>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>
+            +
+          </Text>
+        </TouchableOpacity>
       </View>  
      </View>
    )
@@ -27,7 +31,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
     headerText: {
       fontSize: 30,
       fontWeight: 'bold',
-      color: 'white'
+      color: 'white',
     },
     button: {
       backgroundColor: '#0F5387',
@@ -38,10 +42,15 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
       textAlign: 'center',
       fontSize: 30,
       fontWeight: 'bold',
-      color: '#fff'
+      color: '#fff',
+      alignItems: 'center'
+    },
+    buttonText:{
+      fontSize: 30,
+      color: 'white',
     },
     invButton: {
-      width: '10%',
+      width: 32,
       marginLeft: 10,
     },
     containerFlex: {

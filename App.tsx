@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import Header from './src/components/Header';
+import Home from './src/pages/Home';
 
 // You can import supported modules from npm
 //import  Card  from 'react-native-paper';
@@ -8,14 +9,11 @@ import Header from './src/components/Header';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-     <Header title = "CONTATOS" button = '+'/>
-      <Text style={styles.paragraph}>
-    
-      </Text>
-      {/*<Card>
-      </Card>*/}
-    </View>
+    <>
+      <View style={styles.container}>
+      <Home />
+      </View>
+    </>
   );
 }
 
