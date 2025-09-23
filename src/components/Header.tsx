@@ -1,12 +1,19 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
  export default function Header () {
+ const navigation = useNavigation();
+
+ const redirectCriar = () => {
+  navigation.navigate('CriarContato');
+  }
+
    return(
      <View style={styles.container}>
        <View style={styles.containerFlex}>
         <View style={styles.invButton}></View>
         <Text style={styles.headerText}>CONTATOS</Text>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity onPress={redirectCriar} style={styles.button}>
           <Text style={styles.buttonText}>
             +
           </Text>
