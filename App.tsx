@@ -1,18 +1,30 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import CriarContato from './src/pages/CriarContato';
 import Home from './src/pages/Home';
+import EditarContato from './src/pages/EditarContato';
+import { useEffect } from 'react';
+import { getDBConnection, createTable } from './src/db/db-services';
 
 
 export type RootRoutesStack = {
   Home: undefined;
   CriarContato: undefined;
+  EditarContato: {contatoId: number};
 };
 
 const Stack = createNativeStackNavigator<RootRoutesStack>(); 
 
 export default function App() {
+  
+  useEffect(() => {
+    (async () => {
+      const db = await getDBConnection();
+      await createTable(db);
+    })();
+  }, []);
+
   return (
     <>
       <NavigationContainer>

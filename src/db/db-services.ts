@@ -27,7 +27,7 @@ export const createTable = async (db: SQLiteDatabase) => {
 export const getContatos = async (db: SQLiteDatabase): Promise<Contato[]> => {
     try {
         const contatos: Contato[] = [];
-        const resultados = await db.executeSql(`SELECT id, nome 
+        const resultados = await db.executeSql(`SELECT *
                                                 FROM ${tableName}`);
         resultados?.forEach( (result: any) => {
             for (let i = 0; i < result.rows.length; i++) {
@@ -66,18 +66,20 @@ export const getContatoById = async (id: number, db: SQLiteDatabase ): Promise<C
 }
 
 //cria um novo contato
-export const saveContato = async (db: SQLiteDatabase, contatos: Contato[]) => {
-    const insertQuery =
-    `INSERT OR REPLACE INTO ${tableName}(nome, sobrenome, telefone, email) values`+
-        contatos.map(i => `(
-            '${i.nome}', 
-            '${i.sobrenome}',
-            '${i.telefone}',
-            '${i.email}' 
-        )`).join(',');
-
-    return db.executeSql(insertQuery);
+export const saveContato = async (db: SQLiteDatabase, contato: Contato) => {
+    const insertQuery = `
+        INSERT INTO ${tableName}(nome, sobrenome, telefone, email)
+        VALUES (?, ?, ?, ?)
+    `;
+    
+    return db.executeSql(insertQuery, [
+        contato.nome,
+        contato.sobrenome,
+        contato.telefone,
+        contato.email
+    ]);
 }
+
 
 //atualiza um contato já existente 
 export const updateContato = async (db: SQLiteDatabase, id: number, nome: string, sobrenome: string, telefone: string, email: string) => {

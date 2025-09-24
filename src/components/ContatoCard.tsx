@@ -6,16 +6,18 @@ import { Contato } from "../models/contato";
 
 export const ContatoCardComponent: React.FC<{
     contato: Contato;
-}> = ({ contato: { id, nome, sobrenome, telefone, email }}) => {
+    handleEditar: () => void
+    handleRefresh: () => void
+}> = ({ contato, handleEditar, handleRefresh}) => {
 
 
     return (
         <>
             <View style={styles.container}>
                 <View style={styles.dadosContainer}>
-                    <Text>{nome} {sobrenome}</Text>
-                    <Text>{telefone}</Text>
-                    <Text>{email}</Text>
+                    <Text>{contato.nome} {contato.sobrenome}</Text>
+                    <Text>{contato.telefone}</Text>
+                    <Text>{contato.email}</Text>
                 </View>
                 <View style={styles.buttonsContainer}>
                     <Text>Editar</Text>

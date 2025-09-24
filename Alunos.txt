@@ -1,0 +1,6 @@
+Turma: 3AINFO 
+Alunas: 
+    - Anna Beatriz Waldheim da Silva 
+    - Mariana dos Santos Lima
+    - Maria Rita Fagundes Vargas
+    - Ricardo Yeshua Cavalcante Kalil
