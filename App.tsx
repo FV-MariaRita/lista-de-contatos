@@ -1,18 +1,26 @@
 import { StyleSheet, Text, View } from 'react-native';
-import Header from './src/components/Header';
+import { NavigationContainer } from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import CriarContato from './src/pages/CriarContato';
 import Home from './src/pages/Home';
 
-// You can import supported modules from npm
-//import  Card  from 'react-native-paper';
 
-// or any files within the Snack
+export type RootRoutesStack = {
+  Home: undefined;
+  CriarContato: undefined;
+};
+
+const Stack = createNativeStackNavigator<RootRoutesStack>(); 
 
 export default function App() {
   return (
     <>
-      <View style={styles.container}>
-      <Home />
-      </View>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName='Home'>
+          <Stack.Screen name='Home' component={Home} />
+          <Stack.Screen name='CriarContato' component={CriarContato} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </>
   );
 }

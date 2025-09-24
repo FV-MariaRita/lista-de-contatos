@@ -1,7 +1,8 @@
 import React from "react";
 import {View, TouchableOpacity, Text, TextInput, StyleSheet } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
-const CriarContato = () => {
+const CriarContato = ({route}: any) => {
   return(
     <>
     <Text style={styles.titleText}>Adicionar Contato</Text>

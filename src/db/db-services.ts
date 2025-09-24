@@ -29,7 +29,7 @@ export const getContatos = async (db: SQLiteDatabase): Promise<Contato[]> => {
         const contatos: Contato[] = [];
         const resultados = await db.executeSql(`SELECT id, nome 
                                                 FROM ${tableName}`);
-        resultados.forEach( (result: any) => {
+        resultados?.forEach( (result: any) => {
             for (let i = 0; i < result.rows.length; i++) {
                 contatos.push(result.rows.item(i))
             }

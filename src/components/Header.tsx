@@ -1,11 +1,16 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
- export default function Header () {
- const navigation = useNavigation();
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { RootRoutesStack } from '../../App';
 
- const redirectCriar = () => {
-  navigation.navigate('CriarContato');
+type NavigationProp = NativeStackNavigationProp<RootRoutesStack, 'Home'>;
+
+export default function Header () {
+  const navigation = useNavigation<NavigationProp>();
+
+  const redirectCriar = () => {
+    navigation.navigate("CriarContato");
   }
 
    return(
