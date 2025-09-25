@@ -1,8 +1,6 @@
-import { StyleSheet, Text, View, ScrollView  } from "react-native";
-import Header from "../components/Header";
-import { SafeAreaView} from "react-native-safe-area-context";
-import { useState,  useEffect } from "react";
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert  } from "react-native";
 import { Contato } from "../models/contato";
+import { deleteContato} from "../db/db-services";
 
 export const ContatoCardComponent: React.FC<{
     contato: Contato;
@@ -10,6 +8,30 @@ export const ContatoCardComponent: React.FC<{
     handleRefresh: () => void
 }> = ({ contato, handleEditar, handleRefresh}) => {
 
+    const handleDelete = async (id: number) => {
+        Alert.alert(
+            'Atenção',
+            'Tem certeza que deseja excluir o contato?',
+            [
+                {
+                    text: 'Sim',
+                    onPress: async () => {
+                        try {
+                            await deleteContato(id);
+                            handleRefresh();
+
+                        } catch (error) {
+                            console.error(error);
+                        }
+                    }
+                },
+                {
+                    text: 'Não',
+                    onPress: () => console.log('não exccluir contato')
+                }
+            ],
+        );        
+    }
 
     return (
         <>
@@ -20,8 +42,16 @@ export const ContatoCardComponent: React.FC<{
                     <Text>{contato.email}</Text>
                 </View>
                 <View style={styles.buttonsContainer}>
-                    <Text>Editar</Text>
-                    <Text>Excluir</Text>
+                    <TouchableOpacity onPress={handleEditar}>
+                        <Text>
+                            Editar
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => handleDelete(contato.id!)}>
+                        <Text>
+                            Excluir
+                        </Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         </>

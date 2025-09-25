@@ -1,9 +1,9 @@
-import { StyleSheet, Text, View, ScrollView  } from "react-native";
+import { StyleSheet, Text, View, ScrollView, FlatList  } from "react-native";
 import Header from "../components/Header";
 import { SafeAreaView} from "react-native-safe-area-context";
 import { useState, useCallback, useEffect } from "react";
 import { Contato } from "../models/contato";
-import { getDBConnection, getContatos} from "../db/db-services";
+import { getContatos} from "../db/db-services";
 import { ContatoCardComponent } from "../components/ContatoCard";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -18,8 +18,7 @@ export default function Home() {
     const [contatos, setContatos] = useState<Contato[]>([]);
 
     const loadDataCallback = useCallback( async () => {
-        const db = await getDBConnection();
-        const storedContatos = await getContatos(db); 
+        const storedContatos = await getContatos(); 
         if (storedContatos && storedContatos.length > 0) {
             setContatos(storedContatos);
             return;
@@ -45,9 +44,24 @@ export default function Home() {
                             <ContatoCardComponent 
                                 key={contato.id} 
                                 contato={contato} 
-                                handleEditar={() => navigation.navigate('EditarContato', {contatoId: contato.id!})}
-                                handleRefresh={() => loadDataCallback()} />
+                                handleEditar={() => navigation.navigate('EditarContato', {contato})}
+                                handleRefresh={() => loadDataCallback()} 
+                            />
                         ))}
+
+                        {/*}
+                        <FlatList
+                            data={contatos}
+                            keyExtractor={(item) => item.id.toString()}
+                            renderItem={({item}) => (
+                                <ContatoCardComponent 
+                                    key={item.id} 
+                                    contato={item} 
+                                    handleEditar={() => navigation.navigate('EditarContato', {contatoId: item.id!})}
+                                    handleRefresh={() => loadDataCallback()} 
+                                />
+                            )}
+                        />  */}
                     </View>
                 </ScrollView>
             </SafeAreaView>

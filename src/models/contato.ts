@@ -1,4 +1,4 @@
-export type Contato = {
+export interface Contato  {
     id?: number,
     nome: string,
     sobrenome: string,

@@ -1,49 +1,49 @@
-import { enablePromise, openDatabase, SQLiteDatabase } from 'react-native-sqlite-storage';
+import * as SQLite from 'expo-sqlite';
 import { Contato } from "../models/contato";
 
 
 const tableName = 'contatos';
 
-enablePromise (true);
-
-export const getDBConnection = async () => {
-    return openDatabase({ name: 'agendaContatos.db', location: 'default' });
+export const getDBConnection = () => {
+    return SQLite.openDatabaseAsync('agendaContatos.db');
 };
 
 //cria a tabela contatos
-export const createTable = async (db: SQLiteDatabase) => {
-    const query = `CREATE TABLE IF NOT EXISTS ${tableName} (
-        id INTEGER PRIMARY KEY AUTOINCREMENT, 
-        nome TEXT NOT NULL, 
-        sobrenome TEXT NOT NULL, 
-        telefone TEXT NOT NULL, 
-        email TEXT NOT NULL
-    );`;
-
-    await db.executeSql(query);
+export const createTable = async () => {
+    const db = await getDBConnection();
+    try {
+        const query = `
+            PRAGMA journal_mode = WAL;
+            CREATE TABLE IF NOT EXISTS ${tableName} (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                nome TEXT NOT NULL, 
+                sobrenome TEXT NOT NULL, 
+                telefone TEXT NOT NULL, 
+                email TEXT NOT NULL
+            );`;
+        await db.execAsync(query);
+        console.log('Banco inicializado');
+    } catch (error) {
+        console.error("Erro ao inicializar o banco:", error);
+    }
+    
 };
 
 //retorna uma lista com id e nome de todos os contatos existentes no banco de dados 
-export const getContatos = async (db: SQLiteDatabase): Promise<Contato[]> => {
-    try {
-        const contatos: Contato[] = [];
-        const resultados = await db.executeSql(`SELECT *
-                                                FROM ${tableName}`);
-        resultados?.forEach( (result: any) => {
-            for (let i = 0; i < result.rows.length; i++) {
-                contatos.push(result.rows.item(i))
-            }
-        });
+export const getContatos = async (): Promise<Contato[]> => {
+    const db = await getDBConnection();
 
-        return contatos;
+    try {
+        const resultados = await db.getAllAsync(`SELECT * FROM ${tableName}`);
+        return resultados as Contato[];
 
     } catch (error) {
-        console.error('Erro ao carregar as notas', error);
+        console.error('Erro ao buscar os contatos', error);
         return [];
     }
 }
 
-//retorna todos os dados de um contato específico
+/*retorna todos os dados de um contato específico
 export const getContatoById = async (id: number, db: SQLiteDatabase ): Promise<Contato[]> => {
     try {
         const contato: Contato[] = [];
@@ -64,57 +64,84 @@ export const getContatoById = async (id: number, db: SQLiteDatabase ): Promise<C
         throw error;
     }   
 }
+*/
 
 //cria um novo contato
-export const saveContato = async (db: SQLiteDatabase, contato: Contato) => {
-    const insertQuery = `
-        INSERT INTO ${tableName}(nome, sobrenome, telefone, email)
-        VALUES (?, ?, ?, ?)
-    `;
+export const saveContato = async (contato: Contato) => {
+
+    if (
+        typeof contato.nome !== 'string' ||
+        typeof contato.sobrenome !== 'string' ||
+        typeof contato.telefone !== 'string' ||
+        typeof contato.email !== 'string'
+    ) {
+        console.error('Contato malformado:', contato);
+        throw new Error('Dados do contato malformados');
+    }
+
+    const db = await getDBConnection();
+
+    try {
+        const insertQuery = `
+            INSERT INTO ${tableName} (nome, sobrenome, telefone, email)
+            VALUES (?, ?, ?, ?)
+        `;
+        await db.runAsync(insertQuery, [
+            contato.nome,
+            contato.sobrenome,
+            contato.telefone,
+            contato.email,
+        ]);
+
+    } catch (error) {
+        console.error('erro ao executar insert', error);
+    }
     
-    return db.executeSql(insertQuery, [
-        contato.nome,
-        contato.sobrenome,
-        contato.telefone,
-        contato.email
-    ]);
 }
 
 
 //atualiza um contato já existente 
-export const updateContato = async (db: SQLiteDatabase, id: number, nome: string, sobrenome: string, telefone: string, email: string) => {
-    if (id == null) return;
+export const updateContato = async (contato: Contato) => {
+    if (contato.id == null) return;
+
+    const db = await getDBConnection();
 
     const query = `UPDATE ${tableName}
                     SET 
-                        nome = '${nome}',
-                        sobrenome = '${sobrenome}',
-                        telefone = '${telefone}',
-                        email = '${email}'
-                    WHERE id = ${id} `;
+                        nome = ?,
+                        sobrenome = ?,
+                        telefone = ?,
+                        email = ?
+                    WHERE id = ? `;
     try {
-        await db.executeSql(query);
+        await db.runAsync(query, [
+            contato.nome,
+            contato.sobrenome,
+            contato.telefone,
+            contato.email,
+            contato.id,
+        ]);
     } catch (error) {
         console.error('Erro ao atualizar o contato: ', error);
-        throw error;
     }
 }
 
 //exclui um contato
-export const deleteContato = async (db: SQLiteDatabase, id: number) => {
-    const query = `DELETE from ${tableName} 
-                   WHERE rowid = ${id}`;
-
+export const deleteContato = async (id: number) => {
+    
+    const db = await getDBConnection(); 
+    const query = `DELETE from ${tableName} WHERE id = ?`;
     try {
-        await db.executeSql(query);
+        await db.runAsync(query, [id]);
     } catch (error) {
         console.error('Erro ao excluir o contato: ', error);
-        throw error;
     }
 }
 
-//exclui a tabela contatos
-export const deleteTable = async (db: SQLiteDatabase) => {
+/*exclui a tabela contatos
+export const deleteTable = async () => {
+    const db = await getDBConnection();
     const query = `drop table ${tableName}`;
     await db.executeSql(query);
 }
+*/

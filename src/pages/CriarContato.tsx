@@ -2,38 +2,37 @@ import React from "react";
 import {View, TouchableOpacity, Text, TextInput, StyleSheet, Alert } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useState } from "react";
-import { getDBConnection, saveContato } from "../db/db-services";
+import { createTable, getDBConnection, saveContato } from "../db/db-services";
 import { Contato } from "../models/contato";
 
 const CriarContato = ({route}: any) => {
 
   const navigation = useNavigation<any>();
-  
-  const [contato, setContato] = useState<Contato>({
-    nome: '',
-    sobrenome: '',
-    telefone: '',
-    email: '',
-  })
 
-  const handleSubmit = async () => {
-    if (!contato.nome || !contato.sobrenome || !contato.telefone || !contato.email) {
+  const [nome, setNome] = useState('');
+  const [sobrenome, setSobrenome] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const [email, setEmail] = useState('');
+
+  const addContato = async () => {
+    if (nome ==  '' || sobrenome == '' || telefone == '' || email == '') {
       Alert.alert(
         'Atenção',
         'Preencha todos os campos antes de salvar o contato'
-      )
-      return
-    }
+      );
+      return;
+    } 
+    console.log("Contato a ser salvo:", { nome, sobrenome, telefone, email });
     try {
-      const db = await getDBConnection();
-      await saveContato(db, contato);
-      navigation.goBack();
-
+      await createTable();
+      await saveContato ({nome, sobrenome, telefone, email});
+      navigation.navigate("Home");
     } catch (error) {
       console.error(error);
+      Alert.alert("Erro", "Não foi possível salvar o contato.");
     }
-    
   }
+
 
   return(
     <>
@@ -42,26 +41,26 @@ const CriarContato = ({route}: any) => {
 
       <View>
         <Text style={styles.text}> Nome: </Text>
-        <TextInput style={styles.textInput} placeholder = "Nome" value={contato.nome} onChangeText={(text) => setContato({...contato, nome: text})} />
+        <TextInput style={styles.textInput} placeholder = "Nome" value={nome} onChangeText={setNome} />
       </View>
       <View>
         <Text style={styles.text}> Sobrenome: </Text>
-        <TextInput style={styles.textInput} placeholder = "Sobrenome" value={contato.sobrenome} onChangeText={(text) => setContato({...contato, sobrenome: text})}/>
+        <TextInput style={styles.textInput} placeholder = "Sobrenome" value={sobrenome} onChangeText={setSobrenome}/>
       </View>
 
         <View style={styles.smallContainer}>
           <View style={styles.smallerContainer}>
             <Text style={styles.text}> Telefone: </Text>
-            <TextInput style={styles.textInput} placeholder = "(99) 99999-9999"  value={contato.telefone} onChangeText={(text) => setContato({...contato, telefone: text})}/>
+            <TextInput style={styles.textInput} placeholder = "(99) 99999-9999"  value={telefone} onChangeText={setTelefone} />
           </View>
           <View style={styles.smallerContainer}>
             <Text style={styles.text}> Email: </Text>
-            <TextInput style={styles.textInput} placeholder = "Email" value={contato.email} onChangeText={(text) => setContato({...contato, email: text})}/>
+            <TextInput style={styles.textInput} placeholder = "Email" value={email} onChangeText={setEmail} />
           </View>
         </View>
 
     </View>
-    <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+    <TouchableOpacity style={styles.button} onPress={addContato}>
       <Text style={styles.buttonText}>
         Salvar
       </Text>
