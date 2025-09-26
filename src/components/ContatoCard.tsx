@@ -37,21 +37,32 @@ export const ContatoCardComponent: React.FC<{
         <>
             <View style={styles.container}>
                 <View style={styles.dadosContainer}>
-                    <Text>{contato.nome} {contato.sobrenome}</Text>
-                    <Text>{contato.telefone}</Text>
-                    <Text>{contato.email}</Text>
+                    <View style={styles.indivDadoContainer}>
+                        <Text>{contato.nome} {contato.sobrenome}</Text>
+                    </View>
+                    <View style={styles.indivDadoContainer}>
+                        <Text>{contato.telefone}</Text>
+                    </View>
+                    <View style={styles.indivDadoContainer}>
+                        <Text>{contato.email}</Text>
+                    </View>    
                 </View>
                 <View style={styles.buttonsContainer}>
-                    <TouchableOpacity onPress={handleEditar}>
-                        <Text>
-                            Editar
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => handleDelete(contato.id!)}>
-                        <Text>
-                            Excluir
-                        </Text>
-                    </TouchableOpacity>
+                    <View style={styles.editarContainer}>
+                        <TouchableOpacity onPress={handleEditar}>
+                            <Text style={styles.buttonText}>
+                                Editar
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.excluirContainer}>
+                        <TouchableOpacity onPress={() => handleDelete(contato.id!)}>
+                            <Text style={styles.buttonText}>
+                                Excluir
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                    
                 </View>
             </View>
         </>
@@ -69,17 +80,51 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 10,
         color: 'black',
+        marginTop: "10%"
     },
     dadosContainer: {
         display: 'flex',
         flexDirection: 'column',
         backgroundColor: 'white',
         color: 'black',
+        marginLeft: 'auto'
     }, 
+
+    indivDadoContainer: {
+      marginBottom: "3%"
+    },
     buttonsContainer: {
         display: 'flex',
         flexDirection: 'column',
         backgroundColor: 'white',
-        color: 'red',
+        marginLeft: 'auto',
+        marginRight: 20,
+       alignItems: 'flex-end',
+        
+        
+    },
+    editarContainer: {
+      backgroundColor: '#1A5299',
+      padding: 6.4,
+      borderRadius: 10,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.,
+      shadowRadius: 5,
+    },
+
+    excluirContainer: {
+      marginTop: "30%",
+      backgroundColor: '#1A5299',
+      padding: 5,
+      borderRadius: 10,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.3,
+      shadowRadius: 5,
+    },
+
+    buttonText: {
+      color: '#efefef'
     }
 })

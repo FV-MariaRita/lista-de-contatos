@@ -37,8 +37,8 @@ const CriarContato = ({route}: any) => {
   return(
     <>
     <Text style={styles.titleText}>Adicionar Contato</Text>
-    <View style={styles.container}>
 
+    <View style={styles.container}>
       <View>
         <Text style={styles.text}> Nome: </Text>
         <TextInput style={styles.textInput} placeholder = "Nome" value={nome} onChangeText={setNome} />
@@ -47,29 +47,29 @@ const CriarContato = ({route}: any) => {
         <Text style={styles.text}> Sobrenome: </Text>
         <TextInput style={styles.textInput} placeholder = "Sobrenome" value={sobrenome} onChangeText={setSobrenome}/>
       </View>
-
-        <View style={styles.smallContainer}>
+      <View style={styles.smallContainer}>
           <View style={styles.smallerContainer}>
             <Text style={styles.text}> Telefone: </Text>
-            <TextInput style={styles.textInput} placeholder = "(99) 99999-9999"  value={telefone} onChangeText={setTelefone} />
+            <TextInput style={styles.textInput} placeholder = "(99) 99999-9999"  value={telefone} onChangeText={setTelefone} keyboardType="phone-pad"/>
           </View>
           <View style={styles.smallerContainer}>
             <Text style={styles.text}> Email: </Text>
-            <TextInput style={styles.textInput} placeholder = "Email" value={email} onChangeText={setEmail} />
+            <TextInput style={styles.textInput} placeholder = "Email" value={email} onChangeText={setEmail} keyboardType="email-address"/>
           </View>
-        </View>
-
+      </View>
     </View>
     <TouchableOpacity style={styles.button} onPress={addContato}>
       <Text style={styles.buttonText}>
         Salvar
       </Text>
     </TouchableOpacity>
+
     </>
   )
 }
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 0.4,
     backgroundColor: '#207BB0',
@@ -93,7 +93,8 @@ const styles = StyleSheet.create({
   smallContainer: {
     marginBottom: 10,
     marginTop: 10,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
 
    titleText: {
@@ -140,6 +141,7 @@ const styles = StyleSheet.create({
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.3,
       shadowRadius: 5,
+      alignSelf: 'center'
 
     },
   buttonText: {

@@ -15,6 +15,13 @@ export const EditarContato = () => {
     const [email, setEmail] = useState(contato.email);
 
     const handleUpdate = async () => {
+       if (nome ==  '' || sobrenome == '' || telefone == '' || email == '') {
+          Alert.alert(
+            'Atenção',
+            'Preencha todos os campos antes de salvar o contato'
+          );
+          return;
+        }
         try {
             await updateContato({id: contato.id, nome, sobrenome, telefone, email});
             navigation.navigate('Home');
@@ -40,11 +47,11 @@ export const EditarContato = () => {
                <View style={styles.smallContainer}>
                  <View style={styles.smallerContainer}>
                    <Text style={styles.text}> Telefone: </Text>
-                   <TextInput style={styles.textInput} placeholder = "(99) 99999-9999"  value={telefone} onChangeText={setTelefone} />
+                   <TextInput style={styles.textInput} placeholder = "(99) 99999-9999"  value={telefone} onChangeText={setTelefone} keyboardType="phone-pad"/>
                  </View>
                  <View style={styles.smallerContainer}>
                    <Text style={styles.text}> Email: </Text>
-                   <TextInput style={styles.textInput} placeholder = "Email" value={email} onChangeText={setEmail}/>
+                   <TextInput style={styles.textInput} placeholder = "Email" value={email} onChangeText={setEmail} keyboardType="email-address"/>
                  </View>
                </View>
        
@@ -82,7 +89,8 @@ const styles = StyleSheet.create({
   smallContainer: {
     marginBottom: 10,
     marginTop: 10,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
 
    titleText: {
@@ -129,7 +137,7 @@ const styles = StyleSheet.create({
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.3,
       shadowRadius: 5,
-
+      alignSelf: 'center'
     },
   buttonText: {
     color: '#fff',
