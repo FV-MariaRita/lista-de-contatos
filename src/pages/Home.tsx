@@ -25,6 +25,7 @@ export default function Home() {
         }
         else {
             console.log("Erro no get dos contatos")
+            setContatos([])
         }
     }, []);
 

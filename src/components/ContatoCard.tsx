@@ -38,13 +38,13 @@ export const ContatoCardComponent: React.FC<{
             <View style={styles.container}>
                 <View style={styles.dadosContainer}>
                     <View style={styles.indivDadoContainer}>
-                        <Text>{contato.nome} {contato.sobrenome}</Text>
+                        <Text style={styles.infoText}>{contato.nome} {contato.sobrenome}</Text>
                     </View>
                     <View style={styles.indivDadoContainer}>
-                        <Text>{contato.telefone}</Text>
+                        <Text style={styles.infoText}>{contato.telefone}</Text>
                     </View>
                     <View style={styles.indivDadoContainer}>
-                        <Text>{contato.email}</Text>
+                        <Text style={styles.infoText}>{contato.email}</Text>
                     </View>    
                 </View>
                 <View style={styles.buttonsContainer}>
@@ -83,12 +83,15 @@ const styles = StyleSheet.create({
         marginTop: "10%"
     },
     dadosContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: 'white',
-        color: 'black',
-        marginLeft: 'auto'
-    }, 
+  display: 'flex',
+  flexDirection: 'column',
+  backgroundColor: 'white',
+  color: 'black',
+  marginLeft: 10,
+  flexShrink: 1,
+  maxWidth: '70%', // para deixar espaço para os botões
+}
+, 
 
     indivDadoContainer: {
       marginBottom: "3%"
@@ -126,5 +129,14 @@ const styles = StyleSheet.create({
 
     buttonText: {
       color: '#efefef'
+    },
+
+    infoText: {
+        flexShrink: 1,
+        flexWrap: 'wrap',
+        maxWidth: '100%',
+        color: 'black',
+        fontSize: 16
     }
+
 })

@@ -4,13 +4,24 @@ import { Contato } from "../models/contato";
 
 const tableName = 'contatos';
 
-export const getDBConnection = () => {
-    return SQLite.openDatabaseAsync('agendaContatos.db');
+let dbInstance: SQLite.SQLiteDatabase | null = null;
+
+export const getDBConnection = async () => {
+  if (dbInstance) return dbInstance;
+  dbInstance = await SQLite.openDatabaseAsync('agendaContatos.db');
+  return dbInstance;
 };
+
 
 //cria a tabela contatos
 export const createTable = async () => {
     const db = await getDBConnection();
+
+    if (!db) {
+        console.error("Erro: conexão retornou null");
+        return;
+    }
+
     try {
         const query = `
             PRAGMA journal_mode = WAL;
@@ -32,6 +43,11 @@ export const createTable = async () => {
 //retorna uma lista com id e nome de todos os contatos existentes no banco de dados 
 export const getContatos = async (): Promise<Contato[]> => {
     const db = await getDBConnection();
+
+    if (!db) {
+        console.error("Erro: conexão retornou null");
+        return;
+    }
 
     try {
         const resultados = await db.getAllAsync(`SELECT * FROM ${tableName}`);
@@ -81,6 +97,11 @@ export const saveContato = async (contato: Contato) => {
 
     const db = await getDBConnection();
 
+    if (!db) {
+        console.error("Erro: conexão retornou null");
+        return;
+    }
+
     try {
         const insertQuery = `
             INSERT INTO ${tableName} (nome, sobrenome, telefone, email)
@@ -106,6 +127,11 @@ export const updateContato = async (contato: Contato) => {
 
     const db = await getDBConnection();
 
+    if (!db) {
+        console.error("Erro: conexão retornou null");
+        return;
+    }
+
     const query = `UPDATE ${tableName}
                     SET 
                         nome = ?,
@@ -130,9 +156,16 @@ export const updateContato = async (contato: Contato) => {
 export const deleteContato = async (id: number) => {
     
     const db = await getDBConnection(); 
+
+    if (!db) {
+        console.error("Erro: conexão retornou null");
+        return;
+    }
+    
     const query = `DELETE from ${tableName} WHERE id = ?`;
     try {
         await db.runAsync(query, [id]);
+        console.log('Foi');
     } catch (error) {
         console.error('Erro ao excluir o contato: ', error);
     }

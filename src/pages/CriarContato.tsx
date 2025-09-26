@@ -71,11 +71,13 @@ const CriarContato = ({route}: any) => {
 const styles = StyleSheet.create({
 
   container: {
-    flex: 0.4,
+    flex: 0.48,
+    alignContent: 'center',
     backgroundColor: '#207BB0',
-    padding: 8,
-    marginTop: "30%",
+    padding: "5%",
+    marginTop: "20%",
     marginBottom: "3%",
+    marginHorizontal: "4%",
     textAlign: 'center',
     borderRadius: 10,
     shadowColor: '#000',
@@ -87,7 +89,7 @@ const styles = StyleSheet.create({
 
   smallerContainer: {
     width: "45%",
-    margin: 5,
+    margin: 5
   },
 
   smallContainer: {
@@ -101,6 +103,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
     color: '#0F5387',
+    marginTop: 50,
     marginBottom: 3,
     alignSelf: 'center',
     backgroundColor: '#D8ECF2',
